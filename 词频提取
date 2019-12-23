@@ -1,0 +1,39 @@
+from sklearn import feature_extraction
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+df=pd.read_excel(r'e:\python\jd\book\jdb.xlsx')
+df['tf-idf最大值']=0
+df['tf-idf最大词']=''
+ds=df
+
+
+pj=list(df['分词结果'])
+aj=[]
+for i in pj:
+    b=str(i).split()
+    t=''
+    for j in b:
+        t=t+j+' '
+    aj.append(t.strip())
+    
+vectorizer = TfidfVectorizer(min_df=1)
+vectorizer.fit_transform(aj)
+word=vectorizer.get_feature_names()
+weight=vectorizer.fit_transform(aj).toarray()
+print('ok')
+
+import numpy as np
+ds=np.array(ds)
+ds=list(ds)
+n=1
+for i in pj:
+    n+=1
+    if n %10000==0:
+        print(n)
+    b=i.split()
+    if ds[int(b[1])][11]<float(b[2]):
+        ds[int(b[1])][11]=float(b[2])
+        ds[int(b[1])][12]=b[0]
+        
